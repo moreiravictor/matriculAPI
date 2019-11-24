@@ -29,15 +29,25 @@ public class DataController {
 		while (iteratorOfRow.hasNext()) {
 			Row row = iteratorOfRow.next();
 			Iterator<Cell> iteratorOfCell = row.cellIterator();
-			String cellString = "";
+			String rowString = "";
 			while(iteratorOfCell.hasNext()) {
 				Cell cell = iteratorOfCell.next();
-				cellString += cell.toString()+"|";
+				rowString += cell.toString()+"|";
 			}
-			spreadsheet.add(cellString);
+			spreadsheet.add(rowString);
 		}
 		wk.close();
 		fis.close();
 		return spreadsheet;
 	}	
+	
+	public ArrayList<String> getBySubjectName(String subjectName, String path) throws IOException {
+		DataController dc = new DataController();
+		ArrayList<String> subjectList = dc.listSubjectsInfo(path);
+		ArrayList<String> specificList = new ArrayList<String>();
+		for (String row : subjectList) {
+			if (row.contains(subjectName)) specificList.add(row);
+		}
+		return specificList;
+	}
 }
