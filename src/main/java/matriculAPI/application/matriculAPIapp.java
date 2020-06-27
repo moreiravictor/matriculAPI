@@ -3,20 +3,27 @@ package matriculAPI.application;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import matriculAPI.model.Command;
 import matriculAPI.model.Subject;
-import matriculAPIController.*; 
+import matriculAPI.matriculAPIController.*;
+
 public class matriculAPIapp {
 	public static void main (String args[]) throws IOException {
 		
 		DataController controll = new DataController();
-		ArrayList<Subject> subjectList = controll.listSubjectsInfo("matricula.xlsx");
-		for (Subject s : subjectList) {
-			System.out.println(s);
+
+		Command command = Command.getOption(args[0]);
+
+		switch (command) {
+			case all:
+				ArrayList<Subject> subjectList = controll.listSubjectsInfo("matricula.xlsx");
+				subjectList.forEach(sub -> System.out.println(sub));
+				break;
+			case subject:
+				ArrayList<Subject> specificList = controll.getBySubjectName(args[1], "matricula.xlsx");
+				specificList.forEach(s -> System.out.println(s));
+				break;
 		}
-		System.out.println("=================================================================");
-		ArrayList<Subject> specificList = controll.getBySubjectName("Projeto Dirigido", "matricula.xlsx");
-		for (Subject s : specificList) {
-			System.out.println(s);
-		}
+
 	}
 }
